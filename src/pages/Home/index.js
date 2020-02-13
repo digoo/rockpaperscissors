@@ -1,32 +1,90 @@
 /* eslint-disable no-console */
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
 import { sum } from 'mathjs';
 
-import { Wrapper, PlayerSide, Button } from './styles';
+import { Wrapper, BestOf, PlayerSide, Scorebox, Button } from './styles';
 
 export default function Home() {
+  // Begin of state area
   const [players, setPlayers] = useState({
-    player1: { name1: 'Red', bg1: 'red', score1: 1 },
-    player2: { name2: 'Blue', bg2: 'blue', score2: 1 },
+    player1: { name1: 'Red', bg1: 'red' },
+    player2: { name2: 'Blue', bg2: 'blue' },
     bestOf: 3,
   });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('players', JSON.stringify(players));
+  }, [players]);
+
+  const [scores, setScores] = useState({
+    score1: 0,
+    score2: 0,
+  });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('scores', JSON.stringify(scores));
+  }, [scores]);
+
   const [messages, setMessages] = useState({
     message: '',
   });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('messages', JSON.stringify(messages));
+  }, [messages]);
+
+  const [messages2, setMessages2] = useState({
+    messageFinal: '',
+  });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('messages', JSON.stringify(messages2));
+  }, [messages2]);
+
+  // This state will be used to show the current symbol
   const [symbols, setSymbols] = useState({
     symbolp1: '',
     symbolp2: '',
   });
-  const [prevSymbols, setprevSymbols] = useState({
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('symbols', JSON.stringify(symbols));
+  }, [symbols]);
+
+  // This state is to show what was the previous symbol, to be used by advanced computer
+  const [prevSymbols, setPrevSymbols] = useState({
     psymbolp1: '',
     psymbolp2: '',
   });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('prevSymbols', JSON.stringify(prevSymbols));
+  }, [prevSymbols]);
 
+  // This state should be used to evaluate the score
+  const [gameSymbols, setGameSymbols] = useState({
+    gsymbolp1: '',
+    gsymbolp2: '',
+  });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('gameSymbols', JSON.stringify(gameSymbols));
+  }, [gameSymbols]);
+
+  // This state define the modes, the modes are self-described below
   const [modes, setModes] = useState({
     game: 'custom', // regular, custom, end (This one is to avoid the game to continue)
     playerType: 'computer', // player, computer, advComputer
+    play: 'play', // play, pause, end
   });
+  useEffect(() => {
+    // Adding values to the localStorage
+    localStorage.setItem('modes', JSON.stringify(modes));
+  }, [modes]);
+
+  // this state <must has the name changed in the future> are used to define as the array of symbols and should be populate by the option the
+  // player want to play, if regular or adv/custom
   const [customSymbols, setCustomSymbols] = useState([
     'rock',
     'paper',
@@ -34,90 +92,161 @@ export default function Home() {
     'lizard',
     'spock',
   ]);
+  useEffect(() => {
+    // Adding values to the localStorage
+    // should be realocated to different page or header/menu/etc
+    localStorage.setItem('customSymbols', JSON.stringify(customSymbols));
+  }, [customSymbols]);
 
-  const calculateWinner = useCallback(() => {
-    const { symbolp1, symbolp2 } = symbols;
-    const { message } = messages;
-    const { psymbolp1, psymbolp2 } = prevSymbols;
-    setprevSymbols(() => ({
-      psymbolp1: symbolp1,
-      psymbolp2: symbolp2,
-    }));
+  // End of State Area
 
+  // previous Symbols
+  const prevSym = () => {
+    const storageSymbols = localStorage.getItem('symbols');
+    console.log(`storageSymbols: ${storageSymbols}`);
+    const parsedStorageSymbols = JSON.parse(storageSymbols);
+
+    setPrevSymbols({
+      psymbolp1: parsedStorageSymbols.symbolp1,
+      psymbolp2: parsedStorageSymbols.symbolp2,
+    });
+  };
+
+  // Pausing the round to avoid uncontrolled continuous play
+  useEffect(() => {
+    const resetRound = () => {
+      if (
+        messages.message !== '' &&
+        messages.message !== 'Reseting the game after 2 seconds.' &&
+        messages2.messageFinal === ''
+      ) {
+        setModes({ ...modes, play: 'pause' });
+        setTimeout(() => {
+          setMessages({
+            ...messages,
+            message: `Reseting the game after 2 seconds.`,
+          });
+        }, 2000);
+        setTimeout(() => {
+          prevSym();
+          setSymbols({
+            symbolp1: '',
+            symbolp2: '',
+          });
+          setMessages({ ...messages, message: '' });
+          setModes({ ...modes, play: 'play' });
+        }, 4000);
+      }
+      if (messages2.messageFinal !== '') {
+        setModes({ ...modes, play: 'end' });
+      }
+    };
+    resetRound();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages2, messages]);
+
+  // Set winner of the game
+  useEffect(() => {
     const {
-      player1: { name1, score1 },
-      player2: { name2, score2 },
+      player1: { name1 },
+      player2: { name2 },
       bestOf,
     } = players;
+    const { score1, score2 } = scores;
 
-    if (symbolp1 === '' || symbolp2 === '') {
-      // do nothing
-    } else if (symbolp1 === symbolp2) {
-      setMessages({
-        message: 'draw, no points added',
-      });
-    } else if (
-      (symbolp1 === 'rock' && symbolp2 === 'scissors') ||
-      (symbolp1 === 'scissors' && symbolp2 === 'lizard') ||
-      (symbolp1 === 'lizard' && symbolp2 === 'paper') ||
-      (symbolp1 === 'paper' && symbolp2 === 'spock') ||
-      (symbolp1 === 'spock' && symbolp2 === 'rock') ||
-      (symbolp1 === 'rock' && symbolp2 === 'lizard') ||
-      (symbolp1 === 'scissors' && symbolp2 === 'paper') ||
-      (symbolp1 === 'lizard' && symbolp2 === 'spock') ||
-      (symbolp1 === 'paper' && symbolp2 === 'spock') ||
-      (symbolp1 === 'spock' && symbolp2 === 'scissors')
-    ) {
-      setPlayers({
-        ...players,
-        player1: { ...players.player1, score1: sum(score1, 1) },
-      });
-      setMessages({
-        message: `Player ${name1} win this round.`,
-      });
-    } else {
-      setPlayers({
-        ...players,
-        player2: { ...players.player2, score2: sum(score2, 1) },
-      });
-      setMessages({
-        message: `Player ${name2} win this round.`,
-      });
-    }
-
-    console.log(bestOf);
-    console.log(score1);
-    console.log(score2);
     if (
       bestOf === score1 + score2 ||
-      score1 - bestOf === 1 ||
-      score2 - bestOf === 1
+      score1 > bestOf / 2 ||
+      score2 > bestOf / 2
     ) {
       if (score1 > score2) {
-        setModes({ ...modes, game: 'end' });
-        setMessages({
-          message: `Game ended, player ${name1} won the game!`,
+        setModes({ ...modes, play: 'end' });
+        setMessages2({
+          ...messages2,
+          messageFinal: `Game ended, player ${name1} win the game!`,
         });
       }
       if (score2 > score1) {
-        setModes({ ...modes, game: 'end' });
-        setMessages({
-          message: `Game ended, player ${name2} won the game!`,
+        setModes({ ...modes, play: 'end' });
+        setMessages2({
+          ...messages2,
+          messageFinal: `Game ended, player ${name2} win the game!`,
         });
       }
     }
-
-    // console.log('Depois');
-    // console.log(`1 ${symbolp1}`);
-    // console.log(`2 ${symbolp2}`);
-    // console.log(`3 ${psymbolp1}`);
-    // console.log(`4 ${psymbolp2}`);
-    // console.log(`5 ${modes.game} ${modes.playerType}`);
-    // console.log(`6 ${message}`);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [symbols, modes, messages]);
+  }, [scores]);
+
+  useEffect(() => {
+    const calculateWinner = () => {
+      // Loading values
+      const { symbolp1, symbolp2 } = symbols;
+      const { gsymbolp1, gsymbolp2 } = gameSymbols;
+      const { psymbolp1, psymbolp2 } = prevSymbols;
+
+      setGameSymbols({
+        ...gameSymbols,
+        gsymbolp1: symbolp1,
+        gsymbolp2: symbolp2,
+      });
+      console.log(`gsymbolp1: ${gsymbolp1}`);
+      console.log(`gsymbolp2: ${gsymbolp2}`);
+
+      localStorage.setItem('prevP1', symbolp1);
+      localStorage.setItem('prevP2', symbolp2);
+
+      const {
+        player1: { name1 },
+        player2: { name2 },
+        // bestOf,
+      } = players;
+      const { score1, score2 } = scores;
+
+      // Logic of winner begin here
+      if (symbolp1 === '' || symbolp2 === '') {
+        // do nothing
+      } else if (symbolp1 === symbolp2) {
+        setMessages({
+          ...messages,
+          message: 'draw, no points added.',
+        });
+      } else if (
+        (symbolp1 === 'rock' && symbolp2 === 'scissors') ||
+        (symbolp1 === 'rock' && symbolp2 === 'lizard') ||
+        (symbolp1 === 'paper' && symbolp2 === 'rock') ||
+        (symbolp1 === 'paper' && symbolp2 === 'spock') ||
+        (symbolp1 === 'scissors' && symbolp2 === 'lizard') ||
+        (symbolp1 === 'scissors' && symbolp2 === 'paper') ||
+        (symbolp1 === 'lizard' && symbolp2 === 'paper') ||
+        (symbolp1 === 'lizard' && symbolp2 === 'spock') ||
+        (symbolp1 === 'spock' && symbolp2 === 'rock') ||
+        (symbolp1 === 'spock' && symbolp2 === 'scissors')
+      ) {
+        setScores({
+          ...scores,
+          score1: sum(score1, 1),
+        });
+        setMessages({
+          ...messages,
+          message: `Player ${name1} won this round.`,
+        });
+      } else {
+        setScores({
+          ...scores,
+          score2: sum(score2, 1),
+        });
+        setMessages({
+          ...messages,
+          message: `Player ${name2} won this round.`,
+        });
+      }
+    };
+    calculateWinner();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [symbols]);
 
   document.onkeydown = keydown => {
+    const { play } = modes;
     if (
       // This Main IF is to avoid use of the following keys along with
       // predefined keys
@@ -125,7 +254,8 @@ export default function Home() {
       keydown.shiftKey === false &&
       keydown.altKey === false &&
       keydown.metaKey === false &&
-      keydown.repeat === false
+      keydown.repeat === false &&
+      play === 'play'
     ) {
       if (modes.game === 'regular' || modes.game === 'custom') {
         if (keydown.code === 'Digit1') {
@@ -298,7 +428,6 @@ export default function Home() {
         }
       }
     }
-    calculateWinner();
   };
 
   const resetGame = useCallback(() => {
@@ -307,6 +436,22 @@ export default function Home() {
       symbolp1: '',
       symbolp2: '',
     }));
+    setPrevSymbols({
+      psymbolp1: '',
+      psymbolp2: '',
+    });
+    setModes({ ...modes, play: 'play' });
+    setMessages({
+      message: '',
+    });
+    setMessages2({
+      messageFinal: '',
+    });
+    setScores({
+      score1: 0,
+      score2: 0,
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const PlayerHand = ({ bg, symbol }) => {
@@ -314,10 +459,28 @@ export default function Home() {
   };
   return (
     <>
+      {console.log(symbols, players, messages)}
+      <BestOf>BestOf: {players.bestOf}</BestOf>
       <Wrapper className="App">
-        <PlayerHand bg={players.player1.bg1} symbol={symbols.symbolp1} />
-        <PlayerHand bg={players.player2.bg2} symbol={symbols.symbolp2} />
-        {console.log(symbols, players, messages)}
+        <div className="sides">
+          <PlayerHand
+            bg={players.player1.bg1}
+            symbol={symbols.symbolp1 ? symbols.symbolp1 : prevSymbols.psymbolp1}
+          />
+          <Scorebox>{scores.score1}</Scorebox>
+        </div>
+        <div className="sides">
+          <PlayerHand
+            bg={players.player2.bg2}
+            symbol={symbols.symbolp2 ? symbols.symbolp2 : prevSymbols.psymbolp2}
+          />
+          <Scorebox>{scores.score2}</Scorebox>
+        </div>
+        <div className="message">
+          <p>
+            {messages2.messageFinal ? messages2.messageFinal : messages.message}
+          </p>
+        </div>
         <Button onClick={resetGame}>Reset Game</Button>
       </Wrapper>
     </>
