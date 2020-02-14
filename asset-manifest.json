@@ -1,21 +1,21 @@
 {
   "files": {
-    "main.js": "/static/js/main.727a963e.chunk.js",
-    "main.js.map": "/static/js/main.727a963e.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.599e9d3e.js",
-    "runtime-main.js.map": "/static/js/runtime-main.599e9d3e.js.map",
-    "static/js/2.aae56af8.chunk.js": "/static/js/2.aae56af8.chunk.js",
-    "static/js/2.aae56af8.chunk.js.map": "/static/js/2.aae56af8.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.42c4d7d699d6beb8af9260f1da383358.js": "/precache-manifest.42c4d7d699d6beb8af9260f1da383358.js",
-    "service-worker.js": "/service-worker.js",
-    "static/js/2.aae56af8.chunk.js.LICENSE": "/static/js/2.aae56af8.chunk.js.LICENSE",
-    "static/media/regular.jpg": "/static/media/regular.bdc69844.jpg",
-    "static/media/thebigbangtheory.jpg": "/static/media/thebigbangtheory.909d7a21.jpg"
+    "main.js": "/rockpaperscissors/static/js/main.727a963e.chunk.js",
+    "main.js.map": "/rockpaperscissors/static/js/main.727a963e.chunk.js.map",
+    "runtime-main.js": "/rockpaperscissors/static/js/runtime-main.2fd97969.js",
+    "runtime-main.js.map": "/rockpaperscissors/static/js/runtime-main.2fd97969.js.map",
+    "static/js/2.20a20c20.chunk.js": "/rockpaperscissors/static/js/2.20a20c20.chunk.js",
+    "static/js/2.20a20c20.chunk.js.map": "/rockpaperscissors/static/js/2.20a20c20.chunk.js.map",
+    "index.html": "/rockpaperscissors/index.html",
+    "precache-manifest.0836deacb796802e0679c7cd72801639.js": "/rockpaperscissors/precache-manifest.0836deacb796802e0679c7cd72801639.js",
+    "service-worker.js": "/rockpaperscissors/service-worker.js",
+    "static/js/2.20a20c20.chunk.js.LICENSE": "/rockpaperscissors/static/js/2.20a20c20.chunk.js.LICENSE",
+    "static/media/regular.jpg": "/rockpaperscissors/static/media/regular.bdc69844.jpg",
+    "static/media/thebigbangtheory.jpg": "/rockpaperscissors/static/media/thebigbangtheory.909d7a21.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.599e9d3e.js",
-    "static/js/2.aae56af8.chunk.js",
+    "static/js/runtime-main.2fd97969.js",
+    "static/js/2.20a20c20.chunk.js",
     "static/js/main.727a963e.chunk.js"
   ]
 }
