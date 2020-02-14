@@ -124,7 +124,7 @@ export default function Home() {
       localStorage.setItem('customSymbols', JSON.stringify(customSymbols));
     }
     localStorage.setItem('players', JSON.stringify(players));
-    history.push('/game');
+    history.push('/rockpaperscissors/game');
   };
 
   return (
