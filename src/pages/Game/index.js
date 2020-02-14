@@ -506,7 +506,7 @@ export default function Game() {
   };
 
   const handleBack = () => {
-    history.push('/rockpaperscissors');
+    history.push('/');
   };
 
   return (
