@@ -1,94 +1,104 @@
 import styled from 'styled-components';
-import { darken } from 'polished';
-
-// import scissors from '../../assets/images/basic/scissors.png';
-// import rock from '../../assets/images/basic/rock.png';
-// import paper from '../../assets/images/basic/paper.png';
-
-export const BestOf = styled.div`
-  display: flex;
-  width: 80px;
-  height: 20px;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  border: 1px solid #eee;
-  margin: 16px auto 0;
-  color: #fff;
-  font-weight: bold;
-`;
+import { darken, lighten } from 'polished';
 
 export const Wrapper = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   justify-content: space-evenly;
-  width: 600px;
-  margin: 16px auto;
 
-  div.sides {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  div.message {
+  div {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 300px;
-    height: 20px;
-    margin-top: 20px;
+    text-align: center;
+    /* border: 1px solid #eee; */
+    margin: 30px auto;
 
-    p {
-      font-size: 16px;
+    strong {
       font-weight: bold;
+      font-size: 22px;
       color: #fff;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    img {
+      width: 300px;
+      height: 300px;
     }
   }
-`;
 
-export const PlayerSide = styled.div`
-    width: 190px;
-    height: 190px;
-    margin: 19px;
-    border-radius: 50%;
-    background-color: ${props => props.bg};
-    background-image: ${props =>
-      `url('./assets/images/custom/${props.symbol}.png')`};
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 500px;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    border: 2px solid #ffe;
-    opacity: 1;
-    background-repeat: no-repeat;
-    background-position: center center;
-  }
-`;
+    border: 1px solid #eee;
+    margin: 30px auto;
 
-export const Scorebox = styled.div`
-  width: 20px;
-  height: 20px;
-  border: 2px solid #ffe;
-  text-align: center;
-  color: #fff;
-  font-weight: bold;
-`;
+    p {
+      color: #fff;
+      font-weight: bold;
+      margin-top: 5px;
+    }
 
-export const Button = styled.button`
-  display: flex;
-  width: 350px;
-  height: 40px;
-  margin: 20px;
-  justify-content: space-evenly;
-  align-items: center;
-  background: linear-gradient(-90deg, #7159c1, #ab59c1);
-  border: 1px solid #eee;
-  color: white;
+    input {
+      background: rgba(0, 0, 0, 0.1);
+      border: 0;
+      border-radius: 4px;
+      height: 34px;
+      padding: 0 15px;
+      color: #fff;
+      margin: 0 0 5px;
 
-  &:hover {
-    background: ${darken(0.03, '#7159c1')};
-  }
+      &:hover {
+        background: ${lighten(0.09, 'rgba(0, 0, 0, 0.1)')};
+      }
 
-  &:active {
-    background: ${darken(0.09, '#7159c1')};
+      &::placeholder {
+        color: rgba(255, 255, 255, 0.7);
+      }
+    }
+    select {
+      background: rgba(0, 0, 0, 0.1);
+      border: 0;
+      border-radius: 4px;
+      height: 24px;
+      padding: 0 5px;
+      color: #fff;
+      margin: 0 0 5px;
+
+      &:hover {
+        background: ${lighten(0.09, 'rgba(0, 0, 0, 0.1)')};
+      }
+    }
+    option {
+      color: #fff;
+      background: #7159c1;
+    }
+
+    button {
+      margin: 15px 0 0;
+      height: 34px;
+      width: 188px;
+      background: #7159c1;
+      font-weight: bold;
+      color: #fff;
+      border: 0;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: ${darken(0.03, '#7159c1')};
+      }
+      &:active {
+        background: ${lighten(0.09, '#7159c1')};
+      }
+    }
   }
 `;
