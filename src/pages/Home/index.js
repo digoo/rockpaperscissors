@@ -14,8 +14,8 @@ const schema = Yup.object().shape({
 
 export default function Home() {
   const [players, setPlayers] = useState({
-    player1: { name1: '', bg1: '' },
-    player2: { name2: '', bg2: '' },
+    player1: { name1: '', bg1: 'Red' },
+    player2: { name2: 'Blue', bg2: 'Blue' },
     bestOf: 3,
   });
   // ComponentDidMount getting all data we have previous added

@@ -7,7 +7,7 @@ import Game from './pages/Game';
 export default function Routes() {
   return (
     <Switch>
-      <Route path="/" exact component={Home} />
+      <Route exact path="/rockpaperscissors" component={Home} />
       <Route path="/rockpaperscissors/game" component={Game} />
       <Route path="/" component={() => <div>404 Page not Found</div>} />
     </Switch>
