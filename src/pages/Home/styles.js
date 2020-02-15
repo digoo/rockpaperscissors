@@ -40,6 +40,13 @@ export const Wrapper = styled.div`
     border: 1px solid #eee;
     margin: 30px auto;
 
+    strong {
+      color: #fff;
+      font-weight: bold;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
     p {
       color: #fff;
       font-weight: bold;

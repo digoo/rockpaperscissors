@@ -133,8 +133,10 @@ export default function Home() {
         <div>
           <strong>Normal Game</strong>
           <img src={regular} alt="Normal game" />
+          <p>Only for desktops with physical keys.</p>
         </div>
         <Form schema={schema} onSubmit={handleSubmit}>
+          <strong>Welcome</strong>
           <p>Name of the Player 1:</p>
           <Input
             type="text"
@@ -201,6 +203,7 @@ export default function Home() {
         <div>
           <strong>The big bang theory Game</strong>
           <img src={thebigbangtheory} alt="The big bang theory game" />
+          <p>Only for desktops with physical keys.</p>
         </div>
       </Wrapper>
     </>
