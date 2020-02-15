@@ -126,14 +126,14 @@ export default function Game() {
     const resetRound = () => {
       if (
         messages.message !== '' &&
-        messages.message !== 'Reseting the game after 2 seconds.' &&
+        messages.message !== 'Hold on, unpausing the game in 2 seconds.' &&
         messages2.messageFinal === ''
       ) {
         setModes({ ...modes, play: 'pause' });
         setTimeout(() => {
           setMessages({
             ...messages,
-            message: `Reseting the game after 2 seconds.`,
+            message: `Hold on, unpausing the game in 2 seconds.`,
           });
         }, 2000);
         setTimeout(() => {
